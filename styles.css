@@ -5,7 +5,12 @@
 
 body {
     background-color: antiquewhite;
-    margin: auto;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
 .title {
@@ -13,11 +18,17 @@ body {
     margin: 2rem;
 }
 
+.game-container {
+    display: grid;
+    grid-gap: 24px;
+    grid-template-rows: repeat(3, 160px);
+    grid-template-columns: repeat(4, 160px);
+}
+
 .flip-card {
     background-color: transparent;
-    margin: 32px auto;
-    width: 200px;
-    height: 200px;
+    width: 160px;
+    height: 160px;
     perspective: 1000px;
 }
 
@@ -27,6 +38,7 @@ body {
     height: 100%;
     transition: transform 0.8s;
     transform-style: preserve-3d;
+    border-radius: 16px;
 }
 
 .flip-card.flipped .flip-card-inner {
