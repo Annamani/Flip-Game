@@ -27,12 +27,12 @@ button {
     margin-top: 20px;
 }
 
-#start-button {
+.start-button {
     background-color: #4CAF50;
     color: white;
 }
 
-#reset-button {
+.reset-button {
     background-color: #f44336;
     color: white;
 }
