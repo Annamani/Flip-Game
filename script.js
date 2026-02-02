@@ -18,7 +18,8 @@ const timerElement = document.querySelectorAll('.timer')[0];
 const gameBoard = document.querySelectorAll('.game-board')[0];
 let moveCount = 0;
 let timerInterval;
-let time = 120;
+let time = 0;
+let timeStart = false;
 let matchedPairs = 0;
 const totalPairs = 3;
 let card1, card2;
@@ -26,25 +27,18 @@ let isCardFlipped = false;
 let cardStayedFlipped = 10;
 
 
-const startTimer = (duration) => {
-    let timeLeft = duration;
+const startTimer = () => {
+    timeStart = true;
     timerInterval = setInterval(() => {
-        timeLeft--;
-        if (timeLeft === 15) {
-            timerElement[0].style.color = "red";
-            alert("Hurry up! Only 15 seconds left.");
-        }
-        else if (timeLeft >= 0) {
-            timerElement[0].textContent = timeLeft;
-        }
-        else {
-            showResult();
-        }
+        time++;
+        if (time >= 0)
+            timerElement.textContent = `Time: ${time} seconds`;
     }, 1000);
 }
 const startGame = startButton.addEventListener('click', () => {
     gameBoard.innerHTML = '';
     moveCount = 0;
+    timeStart = false;
     moveCounters.textContent = `Moves: ${moveCount}`;
     timerElement.textContent = `Time: ${time}`;
     if (moveCount > 0) {
