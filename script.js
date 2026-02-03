@@ -27,7 +27,8 @@ let time = 0;
 let timeStart = false;
 let lockBoard = false;
 let flippedCards = 0;
-let card1, card2 = null;
+let card1,
+    card2 = null;
 let matchedPairs = 0;
 const totalPairs = cardDetails.length;
 
