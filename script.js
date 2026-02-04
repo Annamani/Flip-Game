@@ -47,7 +47,6 @@ const startTimer = () => {
         }
         timerElement.textContent = `Time: ${time} seconds`;
     }, 1000);
-    //check if time exceeds limit
 };
 const stopTimer = () => {
     clearInterval(timerInterval);
