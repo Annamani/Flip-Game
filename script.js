@@ -25,19 +25,29 @@ let cardMoveCount = 0;
 let timerInterval = null;
 let time = 0;
 let timeStart = false;
+const timeLimit = 300;
 let lockBoard = false;
 let flippedCards = 0;
 let card1,
     card2 = null;
 let matchedPairs = 0;
+let hasStartedOnce = false;
 const totalPairs = cardDetails.length;
 
 const startTimer = () => {
     timeStart = true;
     timerInterval = setInterval(() => {
         time++;
+        if (time > timeLimit) {
+            stopTimer();
+            alert(
+                `Time's up! You completed ${matchedPairs} pairs and ${cardMoveCount} moves.`,
+            );
+            resetGame();
+        }
         timerElement.textContent = `Time: ${time} seconds`;
     }, 1000);
+    //check if time exceeds limit
 };
 const stopTimer = () => {
     clearInterval(timerInterval);
@@ -88,6 +98,7 @@ const disableCards = (card1, card2) => {
     matchedPairs++;
     card1.classList.add("matched");
     card2.classList.add("matched");
+
     card1.removeEventListener("click", CardFlipped);
     card2.removeEventListener("click", CardFlipped);
     resetTurn();
@@ -111,13 +122,15 @@ const revealCard = (firstCard, secondCard) => {
             secondCard.classList.remove("flipped");
             resetTurn();
         }
-    }, 4000);
+    }, 2000);
 };
 const startGame = () => {
+    hasStartedOnce = true;
+    startButton.style.display = "none";
+    resetButton.style.display = "inline-block";
     gameBoard.innerHTML = "";
     moveCounters.textContent = `Moves: ${cardMoveCount}`;
     timerElement.textContent = `Time: ${time}`;
-    startTimer();
     createCards();
 };
 const resetGame = () => {
