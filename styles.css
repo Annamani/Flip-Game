@@ -1,6 +1,7 @@
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 body {
@@ -15,18 +16,53 @@ body {
 
 .title {
     text-align: center;
-    margin: 2rem;
+    margin: 1rem;
 }
 
-.game-container {
+button {
+    text-align: center;
+    margin: 10px;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.buttons {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.start-button {
+    margin: auto 10px;
+    background-color: #4caf50;
+    color: white;
+}
+
+.reset-button {
+    background-color: #f44336;
+    color: white;
+}
+
+.counter-div,
+.timer-div {
+    text-align: center;
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+.game-board {
     display: grid;
     grid-gap: 24px;
     grid-template-rows: repeat(3, 160px);
-    grid-template-columns: repeat(4, 160px);
+    grid-template-columns: repeat(3, 160px);
+    margin-bottom: 30px;
 }
 
 .flip-card {
-    background-color: transparent;
+    border: 2px solid transparent;
+    transition: border 0.3s;
     width: 160px;
     height: 160px;
     perspective: 1000px;
@@ -36,39 +72,46 @@ body {
     position: relative;
     width: 100%;
     height: 100%;
-    transition: transform 0.8s;
+    text-align: center;
+    transition: transform 0.6s;
     transform-style: preserve-3d;
-    border-radius: 16px;
+    border-radius: 10px;
 }
 
 .flip-card.flipped .flip-card-inner {
     transform: rotateY(180deg);
 }
 
-.flip-card-front,
-.flip-card-back {
+.card-front,
+.card-back {
     position: absolute;
     backface-visibility: hidden;
     width: 100%;
     height: 100%;
-    border: 8px solid rgb(143, 223, 64);
+    border: 2px solid rgb(143, 223, 64);
     box-sizing: border-box;
 }
 
-.flip-card-front {
+.card-front {
     background-color: rgb(247, 158, 34);
     color: rgb(4, 18, 48);
 }
 
-.flip-card-back {
-    background-color: rgb(73, 55, 236);
-    color: white;
+.card-back {
+    background-color: rgb(78, 55, 236);
     transform: rotateY(180deg);
-}
-
-.front-img,
-.back-img {
+    color: white;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+}
+
+.card-back img {
+    width: 100%;
+    height: 100%;
+    object-fit: none;
+    border-radius: 8px;
+}
+
+.flip-card.matched {
+    border: 3px solid green;
 }
