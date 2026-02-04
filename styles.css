@@ -19,30 +19,6 @@ body {
     margin: 1rem;
 }
 
-.subtitle {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 18px;
-    color: #333;
-}
-
-.container {
-    width: 80%;
-    height: 2px;
-    background-color: #ccc;
-    margin: 20px auto;
-}
-
-.instructions {
-    margin: 20px;
-}
-
-.instructions-list {
-    padding-left: 20px;
-    display: inline-block;
-    text-align: left;
-}
-
 button {
     text-align: center;
     margin: 10px;
