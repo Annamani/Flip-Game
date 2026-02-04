@@ -1,27 +1,27 @@
 <!doctype html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Flip Game</title>
+        <link rel="stylesheet" href="styles.css" />
+    </head>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Flip Game</title>
-    <link rel="stylesheet" href="styles.css" />
-</head>
-
-<body>
-    <h1 class="title">Flip Game</h1>
-    <div class="buttons">
+    <body>
+        <h1 class="title">Flip Game</h1>
         <button class="start-button">Start Game</button>
-        <button class="reset-button" style="display: none">Reset Game</button>
-    </div>
-    <div class="counter-div">
-        <p class="counter-text"><span class="move-counter"></span></p>
-    </div>
-    <div class="timer-div">
-        <p class="timer-text"><span class="timer"></span></p>
-    </div>
-    <div class="game-board"></div>
-</body>
-<script src="script.js"></script>
-
+        <div class="game-info">
+            <button class="reset-button" style="display: none">
+                Reset Game
+            </button>
+            <div class="counter-div">
+                <p class="counter-text"><span class="move-counter"></span></p>
+            </div>
+            <div class="timer-div">
+                <p class="timer-text"><span class="timer"></span></p>
+            </div>
+        </div>
+        <div class="game-board"></div>
+    </body>
+    <script src="script.js"></script>
 </html>
