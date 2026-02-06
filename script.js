@@ -38,15 +38,15 @@ const cardDetails = [
     // {id: 13, name: "butterfly",img: "https://i.postimg.cc/Qxyw2KKh/butterfly-1675930.png"},
 ];
 
-const startButton = document.querySelectorAll(".start-button")[0];
-const resetButton = document.querySelectorAll(".reset-button")[0];
-const moveCounters = document.querySelectorAll(".move-counter")[0];
-const timerElement = document.querySelectorAll(".timer")[0];
-const gameBoard = document.querySelectorAll(".game-board")[0];
+const startButton = document.querySelector(".start-button");
+const resetButton = document.querySelector(".reset-button");
+const moveCounters = document.querySelector(".move-counter");
+const timerElement = document.querySelector(".timer");
+const gameBoard = document.querySelector(".game-board");
 
 let cardMoveCount = 0;
 let timerInterval = null;
-let time = 0;
+let intialTime = 0;
 let timeStart = false;
 const timeLimit = 300;
 let lockBoard = false;
@@ -60,15 +60,15 @@ const totalPairs = cardDetails.length;
 const startTimer = () => {
     timeStart = true;
     timerInterval = setInterval(() => {
-        time++;
-        if (time > timeLimit) {
+        intialTime++;
+        if (intialTime > timeLimit) {
             stopTimer();
             alert(
                 `Time's up! You completed ${matchedPairs} pairs and ${cardMoveCount} moves.`,
             );
             resetGame();
         }
-        timerElement.textContent = `Time: ${time} seconds`;
+        timerElement.textContent = `Time: ${intialTime} seconds`;
     }, 1000);
 };
 const stopTimer = () => {
@@ -81,14 +81,25 @@ const resetTurn = () => {
     lockBoard = false;
 };
 const CardFlipped = (cardElement) => {
+    //check game is locked
     if (lockBoard) return;
+    // check if timer started on first card flip, if not start the timer
     if (!timeStart) startTimer();
+    //validate if the same card is clicked twice
     if (cardElement === card1) return;
+    // on a click of a 3rd card the previous 2 immediately hide, and the 3rd clicked flips
+    if (card1 && card2) {
+        card1.classList.remove("flipped");
+        card2.classList.remove("flipped");
+        resetTurn();
+    }
     cardElement.classList.add("flipped");
+    //if no card is flipped, set the first card
     if (!card1) {
         card1 = cardElement;
         return;
     }
+    //if one card is flipped, set the second card
     card2 = cardElement;
     lockBoard = true;
     revealCard(card1, card2);
@@ -101,33 +112,29 @@ const createCards = () => {
     cardValues.forEach((card) => {
         const cardElement = document.createElement("div");
         cardElement.classList.add("flip-card");
-        const innerCard = document.createElement("div");
-        innerCard.classList.add("flip-card-inner");
-        cardElement.appendChild(innerCard);
-        const frontFace = document.createElement("div");
-        frontFace.classList.add("card-front");
-        const backFace = document.createElement("div");
+        cardElement.innerHTML = `
+        <div class="flip-card-inner">
+            <div class="card-front"></div>
+            <div class="card-back" style="background-image: url(${card.img})"></div>
+        </div>
+    `;
         cardElement.dataset.name = card.name;
-        backFace.classList.add("card-back");
-        backFace.style.backgroundImage = `url(${card.img})`;
-        innerCard.appendChild(frontFace);
-        innerCard.appendChild(backFace);
         cardElement.addEventListener("click", () => CardFlipped(cardElement));
         gameBoard.appendChild(cardElement);
     });
 };
+
 const disableCards = (card1, card2) => {
     matchedPairs++;
     card1.classList.add("matched");
     card2.classList.add("matched");
-
     card1.removeEventListener("click", CardFlipped);
     card2.removeEventListener("click", CardFlipped);
     resetTurn();
     if (matchedPairs === totalPairs) {
         stopTimer();
         alert(
-            `Congratulations! You completed the game in ${cardMoveCount} moves and ${time} seconds.`,
+            `Congratulations! You completed the game in ${cardMoveCount} moves and ${intialTime} seconds.`,
         );
     }
 };
@@ -136,15 +143,14 @@ const revealCard = (firstCard, secondCard) => {
     cardMoveCount++;
     moveCounters.textContent = `Moves: ${cardMoveCount}`;
     setTimeout(() => {
-        const isCardMatch = firstCard.dataset.name === secondCard.dataset.name;
-        if (isCardMatch) {
+        if (firstCard.dataset.name === secondCard.dataset.name) {
             disableCards(firstCard, secondCard);
         } else {
             firstCard.classList.remove("flipped");
             secondCard.classList.remove("flipped");
             resetTurn();
         }
-    }, 2000);
+    }, 1000);
 };
 const startGame = () => {
     hasStartedOnce = true;
@@ -152,14 +158,14 @@ const startGame = () => {
     resetButton.style.display = "inline-block";
     gameBoard.innerHTML = "";
     moveCounters.textContent = `Moves: ${cardMoveCount}`;
-    timerElement.textContent = `Time: ${time}`;
+    timerElement.textContent = `Time: ${intialTime}`;
     createCards();
 };
 const resetGame = () => {
     stopTimer();
     gameBoard.innerHTML = "";
     cardMoveCount = 0;
-    time = 0;
+    intialTime = 0;
     matchedPairs = 0;
     startGame();
 };
