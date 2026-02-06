@@ -36,23 +36,16 @@ button {
     border: none;
     cursor: pointer;
     border-radius: 8px;
+    color: white;
 }
 
 .start-button {
     background-color: #4caf50;
-    color: white;
     margin: 16px;
 }
 
 .reset-button {
     background-color: #f44336;
-    color: white;
-}
-
-.counter-div,
-.timer-div {
-    text-align: center;
-    font-size: 18px;
 }
 
 .game-board {
@@ -80,7 +73,7 @@ button {
     transform-style: preserve-3d;
 }
 
-.flip-card.flipped .flip-card-inner {
+.flipped .flip-card-inner {
     transform: rotateY(180deg);
 }
 
