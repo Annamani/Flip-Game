@@ -20,6 +20,10 @@
     </div>
     <div class="game-board"></div>
 </body>
-<script src="script.js"></script>
+<script src="script.js">
+    fetch("/cards")
+        .then(res => res.json())
+        .then(cards => renderCards(cards))
+</script>
 
 </html>

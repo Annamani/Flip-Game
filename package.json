@@ -1,0 +1,26 @@
+{
+  "name": "flip-game",
+  "version": "1.0.0",
+  "description": "README.md",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "index": "nodemon index.js"
+  },
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Annamani/Flip-Game.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Annamani/Flip-Game/issues"
+  },
+  "homepage": "https://github.com/Annamani/Flip-Game#readme",
+  "dependencies": {
+    "express": "^5.2.1",
+    "knex": "^3.1.0",
+    "sqlite3": "^5.0.2"
+  }
+}
