@@ -44,6 +44,16 @@ button {
     margin: 16px;
 }
 
+.game-level-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin: 16px 0;
+}
+
+.easy-button,
+.medium-button,
+.hard-button,
 .reset-button {
     background-color: #f44336;
 }
@@ -87,7 +97,7 @@ button {
 }
 
 .card-front {
-    background-image: url(images/card-front.png);
+    /* //background-image: url(images/card-front.png); */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
