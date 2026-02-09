@@ -39,30 +39,38 @@ button {
     color: white;
 }
 
+button:hover {
+    box-shadow: 0 0 24px rgb(0, 0, 0, 0.3);
+}
+
 .start-button {
-    background-color: #4caf50;
+    background-color: rgb(78, 55, 236);
     margin: 16px;
 }
 
 .game-level-buttons {
     display: flex;
-    gap: 15px;
+    gap: 24px;
     justify-content: center;
     margin: 16px 0;
 }
 
-.easy-button,
-.medium-button,
+.easy-button {
+    background-color: #4caf50;
+}
+
+.medium-button {
+    background-color: rgb(247, 158, 34);
+}
+
 .hard-button,
 .reset-button {
-    background-color: #f44336;
+    background-color: #f73e3e;
 }
 
 .game-board {
     display: grid;
     grid-gap: 24px;
-    grid-template-rows: repeat(3, 160px);
-    grid-template-columns: repeat(4, 160px);
     margin: 16px;
 }
 
