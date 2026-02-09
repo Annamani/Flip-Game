@@ -1,5 +1,8 @@
 const startButton = document.querySelector(".start-button");
 const resetButton = document.querySelector(".reset-button");
+const easyButton = document.querySelector(".easy-button");
+const mediumButton = document.querySelector(".medium-button");
+const hardButton = document.querySelector(".hard-button");
 const moveCounters = document.querySelector(".move-counter");
 const timerElement = document.querySelector(".timer");
 const gameBoard = document.querySelector(".game-board");
@@ -15,14 +18,9 @@ let card1,
     card2 = null;
 let matchedPairs = 0;
 let hasStartedOnce = false;
-const gridSize = 6;
+let gridSize;
 let cardDetails = [];
 
-// Fetch cards from backend
-async function loadCardsFromDB() {
-    const res = await fetch("/cards");
-    return await res.json();
-}
 const startTimer = () => {
     timeStart = true;
     timerInterval = setInterval(() => {
@@ -70,16 +68,17 @@ const CardFlipped = (cardElement) => {
     lockBoard = true;
     revealCard(card1, card2);
 };
-const createCards = (cards, pairOfCards) => {
+const createCards = (cardFront, cardBack, pairOfCards) => {
+    const frontImage = cardFront[0].img;
     gameBoard.innerHTML = "";
-    const getCards = cards.slice(0, pairOfCards);
+    const getCards = cardBack.slice(0, pairOfCards);
     const cardValues = [...getCards, ...getCards].sort(() => 0.5 - Math.random());
     cardValues.forEach((card) => {
         const cardElement = document.createElement("div");
         cardElement.classList.add("flip-card");
         cardElement.innerHTML = `
         <div class="flip-card-inner">
-            <div class="card-front"></div>
+            <div class="card-front" style="background-image: url(${frontImage})"></div>
             <div class="card-back" style="background-image: url(${card.img_url})"></div>
         </div>
     `;
@@ -124,10 +123,59 @@ const revealCard = (firstCard, secondCard) => {
         }
     }, 600);
 };
-const startGame = async () => {
-    const cards = await loadCardsFromDB();
+const loadfrontCardsFromDB = async () => {
+    const res = await fetch("/card-front");
+    return await res.json();
+};
+const loadBackCardsFromDB = async () => {
+    const res = await fetch("/cards");
+    return await res.json();
+};
+const gameLevel = (level) => {
+    switch (level) {
+        case "easy":
+            gridSize = 3;
+            return gridSize;
+        case "medium":
+            gridSize = 6;
+            return gridSize;
+        case "hard":
+            gridSize = 12;
+            return gridSize;
+        default:
+            gridSize = 2;
+            return gridSize;
+    }
+}
+const disableButtons = () => {
+    easyButton.style.display = "none";
+    mediumButton.style.display = "none";
+    hardButton.style.display = "none";
+}
+const selectLevel = () => {
+    const levelType = ["easy", "medium", "hard"];
+    easyButton.addEventListener("click", () => {
+        gameLevel(levelType[0]);
+        disableButtons();
+        startGame(gridSize);
+    });
+    mediumButton.addEventListener("click", () => {
+        gameLevel(levelType[1]);
+        disableButtons();
+        startGame(gridSize);
+    });
+    hardButton.addEventListener("click", () => {
+        gameLevel(levelType[2]);
+        disableButtons();
+        startGame(gridSize);
+    });
+}
+
+const startGame = async (gridSize) => {
+    const cardBackResult = await loadBackCardsFromDB();
+    const cardFrontResult = await loadfrontCardsFromDB();
     //to display only few cards
-    cardDetails = cards.slice(0, gridSize);
+    cardDetails = cardBackResult.slice(0, gridSize);
     cardMoveCount = 0;
     intialTime = 0;
     matchedPairs = 0;
@@ -137,7 +185,7 @@ const startGame = async () => {
     gameBoard.innerHTML = "";
     moveCounters.textContent = `Moves: ${cardMoveCount}`;
     timerElement.textContent = `Time: ${intialTime}`;
-    createCards(cards, gridSize);
+    createCards(cardFrontResult, cardBackResult, gridSize);
 };
 const resetGame = () => {
     stopTimer();
@@ -145,13 +193,15 @@ const resetGame = () => {
     cardMoveCount = 0;
     intialTime = 0;
     matchedPairs = 0;
-    startGame();
+    startGame(gridSize);
 };
 
-const renderCards = (cards) => {
-    cardDetails = cards;
-    createCards(cards);
-};
+startButton.addEventListener("click", () => {
+    startButton.style.display = "none";
+    easyButton.style.display = "inline-block";
+    mediumButton.style.display = "inline-block";
+    hardButton.style.display = "inline-block";
+});
+selectLevel();
 
-startButton.addEventListener("click", startGame);
 resetButton.addEventListener("click", resetGame);
