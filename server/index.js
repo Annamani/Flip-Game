@@ -10,7 +10,7 @@ app.use(express.static(path.join(process.cwd(), "../")));
 app.use(
     express.urlencoded({
         extended: true,
-    })
+    }),
 );
 app.use(express.json());
 //endpoint to get cards from database
@@ -22,8 +22,8 @@ app.get("/cards", async (req, res) => {
 app.get("/card-front", async (req, res) => {
     const cardFront = await knexInstance.raw("select * from frontcard");
     res.json(cardFront);
-})
+});
 
 app.listen(port, () => {
-    console.log(`Listening on port ${port}`);
+    console.log(`Listening on http://localhost:${port}`);
 });
