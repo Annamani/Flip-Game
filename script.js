@@ -6,6 +6,9 @@ const hardButton = document.querySelector(".hard-button");
 const moveCounters = document.querySelector(".move-counter");
 const timerElement = document.querySelector(".timer");
 const gameBoard = document.querySelector(".game-board");
+const overlay = document.querySelector(".overlay");
+const overlayText = document.querySelector(".overlay-p");
+const playAgainButton = document.querySelector(".overlay-button");
 
 let cardMoveCount = 0;
 let timerInterval = null;
@@ -113,10 +116,9 @@ const disableCards = (card1, card2) => {
     disappearMatchingCards(card1, card2);
     if (matchedPairs === totalPairs) {
         stopTimer();
-        alert(
-            `Congratulations! You completed the game in ${cardMoveCount} moves and ${initialTime} seconds.`,
-        );
-        resetGame();
+        resetButton.disabled = true;
+        overlay.classList.add("show");
+        overlayText.textContent = `You completed the ${currentDifficulty} level game in ${cardMoveCount} moves and ${initialTime} seconds.`;
     }
 };
 
@@ -237,3 +239,12 @@ startButton.addEventListener("click", () => {
 selectLevel();
 
 resetButton.addEventListener("click", resetGame);
+
+playAgainButton.addEventListener("click", () => {
+    overlay.classList.remove("show");
+
+    resetButton.disabled = false;
+    resetButton.style.display = "inline-block";
+
+    resetGame();
+});
