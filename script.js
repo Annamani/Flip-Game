@@ -161,7 +161,7 @@ const difficultyConfig = {
     hard: {
         rows: 4,
         cols: 6,
-        flipDelay: 300,
+        flipDelay: 350,
     },
 };
 
@@ -169,14 +169,20 @@ const setDifficulty = (level) => {
     const config = difficultyConfig[level];
     if (!config) return;
 
+    let rows = config.rows;
+    let cols = config.cols;
+
+    if (window.innerWidth < 800 && level === "hard") {
+        rows = 6;
+        cols = 4;
+    }
+
+    totalPairs = (rows * cols) / 2;
     currentDifficulty = level;
     flipDelay = config.flipDelay;
 
-    const totalCards = config.rows * config.cols;
-    totalPairs = totalCards / 2;
-
-    gameBoard.style.gridTemplateRows = `repeat(${config.rows}, 1fr)`;
-    gameBoard.style.gridTemplateColumns = `repeat(${config.cols}, 1fr)`;
+    gameBoard.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+    gameBoard.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
 };
 
 const disableButtons = () => {
@@ -248,4 +254,10 @@ playAgainButton.addEventListener("click", () => {
     resetButton.style.display = "inline-block";
 
     resetGame();
+});
+
+window.addEventListener("resize", () => {
+    if (currentDifficulty) {
+        setDifficulty(currentDifficulty);
+    }
 });
