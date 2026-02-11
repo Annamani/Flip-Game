@@ -242,7 +242,6 @@ resetButton.addEventListener("click", resetGame);
 
 playAgainButton.addEventListener("click", () => {
     overlay.classList.remove("show");
-
     resetButton.disabled = false;
     resetButton.style.display = "inline-block";
 
