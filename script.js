@@ -107,7 +107,7 @@ const disappearMatchingCards = (card1, card2) => {
     }, 500);
 };
 
-const disableCards = (card1, card2) => {
+const disableCards = async (card1, card2) => {
     matchedPairs++;
     card1.classList.add("matched");
     card2.classList.add("matched");
@@ -120,6 +120,8 @@ const disableCards = (card1, card2) => {
         resetButton.disabled = true;
         overlay.classList.add("show");
         overlayText.textContent = `You completed the ${currentDifficulty} level game in ${cardMoveCount} moves and ${initialTime} seconds.`;
+        await saveScore();
+        await loadScores();
     }
 };
 
@@ -236,6 +238,41 @@ const resetGame = () => {
     matchedPairs = 0;
     startGame(totalPairs);
 };
+
+const saveScore = async () => {
+    const playerName = prompt("Enter your name:");
+
+    if (!playerName) return;
+
+    await fetch("/scores", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            playerName,
+            difficulty: currentDifficulty,
+            moves: cardMoveCount,
+            time: initialTime,
+        }),
+    });
+};
+
+const loadScores = async () => {
+    const response = await fetch(`/scores?difficulty=${currentDifficulty}`);
+    const scores = await response.json();
+
+    const scoreList = document.querySelector(".score-list");
+    scoreList.innerHTML = "";
+
+    scores.forEach((score) => {
+        const li = document.createElement("li");
+        li.textContent = `${score.playerName} | ${score.difficulty} | ${score.moves} moves | ${score.time}s`;
+        scoreList.appendChild(li);
+    });
+};
+
+loadScores();
 
 startButton.addEventListener("click", () => {
     instructions.style.display = "none";
