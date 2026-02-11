@@ -21,6 +21,23 @@ body {
     margin: 1rem;
 }
 
+.instructions {
+    margin: 10px auto;
+    font-style: italic;
+    padding: 20px;
+}
+
+.instructions ul {
+    list-style-type: "👉";
+    margin-left: 1.5em;
+    padding: 10px 0;
+}
+
+.instructions li {
+    font-size: 1.1rem;
+    padding-left: 0.5em;
+}
+
 .game-info {
     display: flex;
     align-items: center;
@@ -167,6 +184,7 @@ button:hover {
 .overlay-title {
     margin-bottom: 24px;
 }
+
 .overlay-p {
     font-size: 16px;
     margin-bottom: 24px;
