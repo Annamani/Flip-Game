@@ -4,12 +4,12 @@
 Flip Card Game is a fun, interactive browser game built with HTML, CSS, JavaScript, Node.js, and SQL that lets users challenge their memory by matching pairs of cards. The game starts with a welcome screen and only begins after clicking the Start Game button. During play, it tracks the number of moves and time taken to complete the game.
 
 # Features
--Start button triggers the game display to select the level of the game.
--Responsive card grid with flip animations.
--Flip cards to reveal and match pairs.
--Move the counter to track how many turns the player makes.
--Timer to track the time taken to match the cards.
--Backend support with Node.js and SQL for storing card data.
+- Start button triggers the game display to select the level of the game.
+- Responsive card grid with flip animations.
+- Flip cards to reveal and match pairs.
+- Move the counter to track how many turns the player makes.
+- Timer to track the time taken to match the cards.
+- Backend support with Node.js and SQL for storing card data.
 
 ## Technologies Used
 HTML5, CSS3, JavaScript, Node.js, SQL
