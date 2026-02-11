@@ -1,3 +1,4 @@
+const instructions = document.querySelector(".instructions");
 const startButton = document.querySelector(".start-button");
 const resetButton = document.querySelector(".reset-button");
 const easyButton = document.querySelector(".easy-button");
@@ -231,6 +232,7 @@ const resetGame = () => {
 };
 
 startButton.addEventListener("click", () => {
+    instructions.style.display = "none";
     startButton.style.display = "none";
     easyButton.style.display = "inline-block";
     mediumButton.style.display = "inline-block";
