@@ -193,6 +193,14 @@ button:hover {
     margin-bottom: 24px;
 }
 
+.scoreboard-title {
+    margin-bottom: 8px;
+}
+
+.score-list {
+    list-style-type: none;
+}
+
 @media (max-width: 600px) {
     .instructions {
         margin: 10px 24px;
