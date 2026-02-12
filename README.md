@@ -11,10 +11,9 @@ Flip Card Game is a fun, interactive browser game built with HTML, CSS, JavaScri
 - Flip cards to reveal and match pairs.
 - Move the counter to track how many turns the player makes.
 - Timer to track the time taken to match the cards.
-- Backend support with Node.js and SQL for storing card data.
+- Backend support with Node.js and SQL for storing card and score data.
 - Winning overlay displaying time and moves.
-- Top 5 scores on score board.
-  
+- The top 5 scores on the scoreboard for each level.
 
 ## Technologies Used
 
@@ -28,5 +27,6 @@ In addition to technical skills, the development process strengthens Agile proje
 using a Trello board to organize tasks, planning work in sprints, conducting regular meetings and communication checkpoints, and prioritizing backend features like database data fetching and storage. The project demonstrates practical skills in user interaction, game logic, and effective teamwork workflows.
 
 ## Contributors
+
 - [@Annamani](https://github.com/Annamani)
 - [@Merve](https://github.com/mervekindan)
