@@ -2,7 +2,7 @@
 
 # About the Project
 
-Flip Card Game is a fun, interactive browser game built with HTML, CSS, JavaScript, Node.js, and SQL that lets users challenge their memory by matching pairs of cards. The game starts with a welcome screen with a Start Game button and only begins after selecting the level of the game. During play, it tracks the number of moves and time taken to complete the game.
+Flip Card Game is a fun, interactive browser game built with HTML, CSS, JavaScript, Node.js, and SQL that lets users challenge their memory by matching pairs of cards. The game starts with a welcome screen with a Start Game button, and only begins after selecting the level of the game. During play, it tracks the number of moves and time taken to complete the game. After winning, your score is recorded, and the top 5 scores are displayed in the scoreboard.
 
 # Features
 
@@ -12,6 +12,9 @@ Flip Card Game is a fun, interactive browser game built with HTML, CSS, JavaScri
 - Move the counter to track how many turns the player makes.
 - Timer to track the time taken to match the cards.
 - Backend support with Node.js and SQL for storing card data.
+- Winning overlay displaying time and moves.
+- Top 5 scores on score board.
+  
 
 ## Technologies Used
 
