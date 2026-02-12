@@ -106,6 +106,34 @@ const disappearMatchingCards = (card1, card2) => {
         card2.style.visibility = "hidden";
     }, 500);
 };
+const saveScore = async () => {
+    const playerName = prompt("Enter your name:");
+    if (!playerName) return;
+    await fetch("/scores", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            playerName,
+            difficulty: currentDifficulty,
+            moves: cardMoveCount,
+            time: initialTime,
+        }),
+    });
+};
+
+const loadScores = async () => {
+    const response = await fetch(`/scores?difficulty=${currentDifficulty}`);
+    const scores = await response.json();
+    const scoreList = document.querySelector(".score-list");
+    scoreList.innerHTML = "";
+    scores.forEach((score) => {
+        const li = document.createElement("li");
+        li.textContent = `${score.playerName} | ${score.difficulty} | ${score.moves} moves | ${score.time}s`;
+        scoreList.appendChild(li);
+    });
+};
 
 const disableCards = async (card1, card2) => {
     matchedPairs++;
@@ -170,19 +198,15 @@ const difficultyConfig = {
 const setDifficulty = (level) => {
     const config = difficultyConfig[level];
     if (!config) return;
-
     let rows = config.rows;
     let cols = config.cols;
-
     if (window.innerWidth < 800 && level === "hard") {
         rows = 6;
         cols = 4;
     }
-
     totalPairs = (rows * cols) / 2;
     currentDifficulty = level;
     flipDelay = config.flipDelay;
-
     gameBoard.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
     gameBoard.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
 };
@@ -238,42 +262,6 @@ const resetGame = () => {
     matchedPairs = 0;
     startGame(totalPairs);
 };
-
-const saveScore = async () => {
-    const playerName = prompt("Enter your name:");
-
-    if (!playerName) return;
-
-    await fetch("/scores", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            playerName,
-            difficulty: currentDifficulty,
-            moves: cardMoveCount,
-            time: initialTime,
-        }),
-    });
-};
-
-const loadScores = async () => {
-    const response = await fetch(`/scores?difficulty=${currentDifficulty}`);
-    const scores = await response.json();
-
-    const scoreList = document.querySelector(".score-list");
-    scoreList.innerHTML = "";
-
-    scores.forEach((score) => {
-        const li = document.createElement("li");
-        li.textContent = `${score.playerName} | ${score.difficulty} | ${score.moves} moves | ${score.time}s`;
-        scoreList.appendChild(li);
-    });
-};
-
-loadScores();
-
 startButton.addEventListener("click", () => {
     instructions.style.display = "none";
     startButton.style.display = "none";
@@ -282,14 +270,12 @@ startButton.addEventListener("click", () => {
     hardButton.style.display = "inline-block";
 });
 selectLevel();
-
+loadScores();
 resetButton.addEventListener("click", resetGame);
-
 playAgainButton.addEventListener("click", () => {
     overlay.classList.remove("show");
     resetButton.disabled = false;
     resetButton.style.display = "inline-block";
-
     resetGame();
 });
 

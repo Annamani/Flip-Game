@@ -23,11 +23,6 @@ app.get("/card-front", async (req, res) => {
     const cardFront = await knexInstance.raw("select * from frontcard");
     res.json(cardFront);
 });
-
-app.listen(port, () => {
-    console.log(`Listening on http://localhost:${port}`);
-});
-
 //endpoint to add a score to database
 app.post("/scores", async (req, res) => {
     try {
@@ -63,3 +58,8 @@ app.get("/scores", async (req, res) => {
         res.status(500).json({ error: "Failed to fetch scores" });
     }
 });
+
+app.listen(port, () => {
+    console.log(`Listening on http://localhost:${port}`);
+});
+
