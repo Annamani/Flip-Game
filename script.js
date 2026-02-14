@@ -1,4 +1,5 @@
 const instructions = document.querySelector(".instructions");
+const gameLevelButtons = document.querySelector(".game-level-buttons");
 const startButton = document.querySelector(".start-button");
 const resetButton = document.querySelector(".reset-button");
 const easyButton = document.querySelector(".easy-button");
@@ -7,9 +8,9 @@ const hardButton = document.querySelector(".hard-button");
 const moveCounters = document.querySelector(".move-counter");
 const timerElement = document.querySelector(".timer");
 const gameBoard = document.querySelector(".game-board");
-const overlay = document.querySelector(".overlay");
-const overlayText = document.querySelector(".overlay-p");
-const playAgainButton = document.querySelector(".overlay-button");
+const overlay = document.getElementById("overlay-div");
+const overlayText = document.getElementById("overlay-text");
+const playAgainButton = document.getElementById("play-again-button");
 
 let cardMoveCount = 0;
 let timerInterval = null;
@@ -82,9 +83,7 @@ const createCards = (cardFront, cardBack, pairOfCards) => {
     const frontImage = cardFront[0].img;
     gameBoard.innerHTML = "";
     const getCards = cardBack.slice(0, pairOfCards);
-    const cardValues = [...getCards, ...getCards].sort(
-        () => 0.5 - Math.random(),
-    );
+    const cardValues = [...getCards, ...getCards].sort(() => 0.5 - Math.random());
     cardValues.forEach((card) => {
         const cardElement = document.createElement("div");
         cardElement.classList.add("flip-card");
@@ -212,9 +211,7 @@ const setDifficulty = (level) => {
 };
 
 const disableButtons = () => {
-    easyButton.style.display = "none";
-    mediumButton.style.display = "none";
-    hardButton.style.display = "none";
+    gameLevelButtons.style.display = "none";
 };
 
 const selectLevel = () => {
@@ -265,9 +262,7 @@ const resetGame = () => {
 startButton.addEventListener("click", () => {
     instructions.style.display = "none";
     startButton.style.display = "none";
-    easyButton.style.display = "inline-block";
-    mediumButton.style.display = "inline-block";
-    hardButton.style.display = "inline-block";
+    gameLevelButtons.style.display = "inline-block";
 });
 selectLevel();
 loadScores();
@@ -279,8 +274,3 @@ playAgainButton.addEventListener("click", () => {
     resetGame();
 });
 
-window.addEventListener("resize", () => {
-    if (currentDifficulty) {
-        setDifficulty(currentDifficulty);
-    }
-});
