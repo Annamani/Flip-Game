@@ -30,7 +30,7 @@ app.get("/card-front", async (request, response) => {
         response.json(cardFront);
     } catch (error) {
         console.error("Database error:", error);
-        response.status(500).json({ error: "Failed to fetch cards from database" })
+        response.status(500).json({ error: "Failed to fetch cards from database" });
     }
 });
 //endpoint to add a score to database
@@ -72,4 +72,3 @@ app.get("/scores", async (request, response) => {
 app.listen(port, () => {
     console.log(`Listening on http://localhost:${port}`);
 });
-

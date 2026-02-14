@@ -32,13 +32,6 @@ const startTimer = () => {
     timeStart = true;
     timerInterval = setInterval(() => {
         initialTime++;
-        if (initialTime > timeLimit) {
-            stopTimer();
-            alert(
-                `Time's up! You completed ${matchedPairs} pairs and ${cardMoveCount} moves.`,
-            );
-            resetGame();
-        }
         timerElement.textContent = `Time: ${initialTime} seconds`;
     }, 1000);
 };
@@ -273,4 +266,3 @@ playAgainButton.addEventListener("click", () => {
     resetButton.style.display = "inline-block";
     resetGame();
 });
-
