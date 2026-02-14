@@ -15,13 +15,23 @@ app.use(
 app.use(express.json());
 //endpoint to get cards from database
 app.get("/cards", async (req, res) => {
-    const cards = await knexInstance.select("*").from("cards");
-    res.json(cards);
+    try {
+        const cards = await knexInstance.select("*").from("cards");
+        res.json(cards);
+    } catch (error) {
+        console.error("Database error:", error);
+        response.status(500).json({ error: "Failed to fetch cards from database" });
+    }
 });
 //endpoint to get front from database
 app.get("/card-front", async (req, res) => {
-    const cardFront = await knexInstance.raw("select * from frontcard");
-    res.json(cardFront);
+    try {
+        const cardFront = await knexInstance.raw("select * from frontcard");
+        res.json(cardFront);
+    } catch (error) {
+        console.error("Database error:", error);
+        response.status(500).json({ error: "Failed to fetch cards from database" })
+    }
 });
 //endpoint to add a score to database
 app.post("/scores", async (req, res) => {
