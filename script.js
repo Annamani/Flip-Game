@@ -2,7 +2,7 @@ const instructions = document.querySelector(".instructions");
 const gameLevelButtons = document.querySelector(".game-level-buttons");
 const startButton = document.querySelector(".start-button");
 const resetButton = document.querySelector(".reset-button");
-const levelButton = document.querySelectorAll(".level-button");
+const levelButtons = document.querySelectorAll(".level-button");
 const moveCounters = document.querySelector(".move-counter");
 const timerElement = document.querySelector(".timer");
 const gameBoard = document.querySelector(".game-board");
@@ -74,7 +74,9 @@ const createCards = (cardFront, cardBack, pairOfCards) => {
     const frontImage = cardFront[0].img;
     gameBoard.innerHTML = "";
     const getCards = cardBack.slice(0, pairOfCards);
-    const cardValues = [...getCards, ...getCards].sort(() => 0.5 - Math.random());
+    const cardValues = [...getCards, ...getCards].sort(
+        () => 0.5 - Math.random(),
+    );
     cardValues.forEach((card) => {
         const cardElement = document.createElement("div");
         cardElement.classList.add("flip-card");
@@ -205,20 +207,14 @@ const disableButtons = () => {
     gameLevelButtons.style.display = "none";
 };
 
-const selectLevel = () => {
-    levelButton.forEach((btn) => {
-        btn.addEventListener("click", () => {
-            const levelDifficulty = btn.dataset.difficulty;
-            setDifficulty(levelDifficulty);
-            gameLevelButtons.style.display = "none";
-            moveCounters.style.display = "block";
-            timerElement.style.display = "block";
-            resetButton.style.display = "inline-block";
-            gameBoard.style.display = "grid";
-            startGame(totalPairs);
-        });
+levelButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+        const levelDifficulty = event.currentTarget.dataset.difficulty;
+        setDifficulty(levelDifficulty);
+        disableButtons();
+        startGame(totalPairs);
     });
-};
+});
 
 const startGame = async (totalPairs) => {
     const cardBackResult = await loadBackCardsFromDB();
@@ -254,7 +250,7 @@ startButton.addEventListener("click", () => {
     resetButton.style.display = "none";
     gameBoard.style.display = "none";
 });
-selectLevel();
+
 loadScores();
 resetButton.addEventListener("click", resetGame);
 playAgainButton.addEventListener("click", () => {
@@ -263,15 +259,8 @@ playAgainButton.addEventListener("click", () => {
     timerElement.style.display = "none";
     resetButton.style.display = "none";
     resetButton.disabled = false;
-    gameBoard.style.display = "none";
-    gameBoard.innerHTML = "";
-    stopTimer();
-    initialTime = 0;
-    cardMoveCount = 0;
-    matchedPairs = 0;
-    moveCounters.textContent = `Moves: ${cardMoveCount}`;
-    timerElement.textContent = `Time: ${initialTime}`;
-    gameLevelButtons.style.display = "inline-block";
+    resetButton.style.display = "inline-block";
+    resetGame();
 });
 
 window.addEventListener("resize", () => {
