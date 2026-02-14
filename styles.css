@@ -46,6 +46,13 @@ body {
     margin: 16px auto;
 }
 
+.move-counter,
+.timer,
+.reset-button,
+.game-board {
+    display: none;
+}
+
 button {
     text-align: center;
     padding: 12px 24px;
