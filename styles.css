@@ -80,15 +80,15 @@ button:hover {
     padding: 0 1rem;
 }
 
-.easy-button {
+.easy {
     background-color: #4caf50;
 }
 
-.medium-button {
+.medium {
     background-color: rgb(247, 158, 34);
 }
 
-.hard-button,
+.hard,
 .reset-button {
     background-color: #f73e3e;
 }

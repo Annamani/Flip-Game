@@ -1,76 +1,100 @@
 <!doctype html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Flip Game</title>
+        <link rel="stylesheet" href="./styles.css" />
+    </head>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Flip Game</title>
-    <link rel="stylesheet" href="./styles.css" />
-</head>
-
-<body>
-    <h1 class="title">Flip Card Game</h1>
-    <div class="instructions">
-        <h2>Instructions :</h2>
-        <ul>
-            <li>
-                Pick a difficulty level after clicking on Start Game — easier levels
-                have fewer pairs, harder levels have more cards to match.
-            </li>
-            <li>Click a card to flip it over and reveal it know whats inside.</li>
-            <li>Flip a second card to try to find a matching pair.</li>
-            <li>If the two cards match, they will disappear.</li>
-            <li>
-                If they do not match, they will flip back after a short delay — try to
-                remember their locations 😉.
-            </li>
-            <li>
-                Continue flipping pairs of cards until all matching pairs have been
-                found.
-            </li>
-            <li>
-                Try to complete the game in as few moves and as little time as
-                possible!
-            </li>
-            <li>
-                Once you have chosen a difficulty (Easy, Medium, or Hard), you can
-                only use the Reset button to restart the game *in that same chosen
-                mode*.
-            </li>
-            <li>
-                If you win and want to play again, click the Play Again button on the
-                winning screen.
-            </li>
-        </ul>
-    </div>
-    <button type="button" class="start-button">Start Game</button>
-    <div class="game-level-buttons">
-        <button type="button" class="easy-button">Easy</button>
-        <button type="button" class="medium-button">Medium</button>
-        <button type="button" class="hard-button">Hard</button>
-    </div>
-    <div class="game-info">
-        <p class="counter-text"><span class="move-counter"></span></p>
-        <p class="timer-text"><span class="timer"></span></p>
-        <button type="button" class="reset-button" style="display: none">
-            Reset Game
-        </button>
-    </div>
-    <div class="game-board"></div>
-    <div id="overlay-div" class="overlay">
-        <div class="overlay-content">
-            <h2 class="overlay-title">🥳 Congratulations! 🥳</h2>
-            <p id="overlay-text" class="overlay-p"></p>
-            <div class="scoreboard">
-                <h3 class="scoreboard-title">🏆 Scoreboard 🏆</h3>
-                <ul class="score-list"></ul>
-            </div>
-            <button type="button" id="play-again-button" class="overlay-button">
-                Play Again
+    <body>
+        <h1 class="title">Flip Card Game</h1>
+        <div class="instructions">
+            <h2>Instructions :</h2>
+            <ul>
+                <li>
+                    Pick a difficulty level after clicking on Start Game —
+                    easier levels have fewer pairs, harder levels have more
+                    cards to match.
+                </li>
+                <li>
+                    Click a card to flip it over and reveal it know whats
+                    inside.
+                </li>
+                <li>Flip a second card to try to find a matching pair.</li>
+                <li>If the two cards match, they will disappear.</li>
+                <li>
+                    If they do not match, they will flip back after a short
+                    delay — try to remember their locations 😉.
+                </li>
+                <li>
+                    Continue flipping pairs of cards until all matching pairs
+                    have been found.
+                </li>
+                <li>
+                    Try to complete the game in as few moves and as little time
+                    as possible!
+                </li>
+                <li>
+                    Once you have chosen a difficulty (Easy, Medium, or Hard),
+                    you can only use the Reset button to restart the game *in
+                    that same chosen mode*.
+                </li>
+                <li>
+                    If you win and want to play again, click the Play Again
+                    button on the winning screen.
+                </li>
+            </ul>
+        </div>
+        <button type="button" class="start-button">Start Game</button>
+        <div class="game-level-buttons">
+            <button
+                type="button"
+                class="level-button easy"
+                data-difficulty="easy"
+            >
+                Easy
+            </button>
+            <button
+                type="button"
+                class="level-button medium"
+                data-difficulty="medium"
+            >
+                Medium
+            </button>
+            <button
+                type="button"
+                class="level-button hard"
+                data-difficulty="hard"
+            >
+                Hard
             </button>
         </div>
-    </div>
-</body>
-<script src="./script.js"></script>
-
+        <div class="game-info">
+            <p class="counter-text"><span class="move-counter"></span></p>
+            <p class="timer-text"><span class="timer"></span></p>
+            <button type="button" class="reset-button" style="display: none">
+                Reset Game
+            </button>
+        </div>
+        <div class="game-board"></div>
+        <div id="overlay-div" class="overlay">
+            <div class="overlay-content">
+                <h2 class="overlay-title">🥳 Congratulations! 🥳</h2>
+                <p id="overlay-text" class="overlay-p"></p>
+                <div class="scoreboard">
+                    <h3 class="scoreboard-title">🏆 Scoreboard 🏆</h3>
+                    <ul class="score-list"></ul>
+                </div>
+                <button
+                    type="button"
+                    id="play-again-button"
+                    class="overlay-button"
+                >
+                    Play Again
+                </button>
+            </div>
+        </div>
+    </body>
+    <script src="./script.js"></script>
 </html>

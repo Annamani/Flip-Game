@@ -2,9 +2,7 @@ const instructions = document.querySelector(".instructions");
 const gameLevelButtons = document.querySelector(".game-level-buttons");
 const startButton = document.querySelector(".start-button");
 const resetButton = document.querySelector(".reset-button");
-const easyButton = document.querySelector(".easy-button");
-const mediumButton = document.querySelector(".medium-button");
-const hardButton = document.querySelector(".hard-button");
+const levelButtons = document.querySelectorAll(".level-button");
 const moveCounters = document.querySelector(".move-counter");
 const timerElement = document.querySelector(".timer");
 const gameBoard = document.querySelector(".game-board");
@@ -209,25 +207,14 @@ const disableButtons = () => {
     gameLevelButtons.style.display = "none";
 };
 
-const selectLevel = () => {
-    easyButton.addEventListener("click", () => {
-        setDifficulty("easy");
+levelButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+        const levelDifficulty = event.currentTarget.dataset.difficulty;
+        setDifficulty(levelDifficulty);
         disableButtons();
         startGame(totalPairs);
     });
-
-    mediumButton.addEventListener("click", () => {
-        setDifficulty("medium");
-        disableButtons();
-        startGame(totalPairs);
-    });
-
-    hardButton.addEventListener("click", () => {
-        setDifficulty("hard");
-        disableButtons();
-        startGame(totalPairs);
-    });
-};
+});
 
 const startGame = async (totalPairs) => {
     const cardBackResult = await loadBackCardsFromDB();
@@ -259,7 +246,7 @@ startButton.addEventListener("click", () => {
     startButton.style.display = "none";
     gameLevelButtons.style.display = "inline-block";
 });
-selectLevel();
+
 loadScores();
 resetButton.addEventListener("click", resetGame);
 playAgainButton.addEventListener("click", () => {
