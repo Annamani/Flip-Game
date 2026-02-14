@@ -76,7 +76,9 @@ const createCards = (cardFront, cardBack, pairOfCards) => {
     const frontImage = cardFront[0].img;
     gameBoard.innerHTML = "";
     const getCards = cardBack.slice(0, pairOfCards);
-    const cardValues = [...getCards, ...getCards].sort(() => 0.5 - Math.random());
+    const cardValues = [...getCards, ...getCards].sort(
+        () => 0.5 - Math.random(),
+    );
     cardValues.forEach((card) => {
         const cardElement = document.createElement("div");
         cardElement.classList.add("flip-card");
@@ -265,4 +267,10 @@ playAgainButton.addEventListener("click", () => {
     resetButton.disabled = false;
     resetButton.style.display = "inline-block";
     resetGame();
+});
+
+window.addEventListener("resize", () => {
+    if (currentDifficulty) {
+        setDifficulty(currentDifficulty);
+    }
 });
