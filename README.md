@@ -19,6 +19,21 @@ Flip Card Game is a fun, interactive browser game built with HTML, CSS, JavaScri
 
 HTML5, CSS3, JavaScript, Node.js, SQL
 
+## To run this project
+
+**Prerequisite**:
+Node.js - Download and install Node.js (includes npm) from the official site(https://nodejs.org/)
+After installation, you can check that they’re installed using "node --version".
+
+**Installation** :
+
+1. Clone this repository from "https://github.com/Annamani/Flip-Game".
+2. Navigate to project directory and install dependencies using
+   npm install
+3. To start the server
+   npm run index (scripts object is updated in package.json).
+4. To run this project in your browser use- http://localhost:3000.
+
 ## Project Purpose
 
 This project was created as part of the HackYourFuture Foundation Project, including frontend interactivity (DOM manipulation and event handling), backend API communication using Node.js, and data persistence with SQL.

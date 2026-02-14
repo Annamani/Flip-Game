@@ -14,29 +14,29 @@ app.use(
 );
 app.use(express.json());
 //endpoint to get cards from database
-app.get("/cards", async (req, res) => {
+app.get("/cards", async (request, response) => {
     try {
         const cards = await knexInstance.select("*").from("cards");
-        res.json(cards);
+        response.json(cards);
     } catch (error) {
         console.error("Database error:", error);
         response.status(500).json({ error: "Failed to fetch cards from database" });
     }
 });
 //endpoint to get front from database
-app.get("/card-front", async (req, res) => {
+app.get("/card-front", async (request, response) => {
     try {
         const cardFront = await knexInstance.raw("select * from frontcard");
-        res.json(cardFront);
+        response.json(cardFront);
     } catch (error) {
         console.error("Database error:", error);
         response.status(500).json({ error: "Failed to fetch cards from database" })
     }
 });
 //endpoint to add a score to database
-app.post("/scores", async (req, res) => {
+app.post("/scores", async (request, response) => {
     try {
-        const { playerName, difficulty, moves, time } = req.body;
+        const { playerName, difficulty, moves, time } = request.body;
 
         await knexInstance("scores").insert({
             playerName,
@@ -45,16 +45,16 @@ app.post("/scores", async (req, res) => {
             time,
         });
 
-        res.status(201).json({ message: "Score saved successfully" });
+        response.status(201).json({ message: "Score saved successfully" });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Failed to save score" });
+        response.status(500).json({ error: "Failed to save score" });
     }
 });
 
 //endpoint to get score from database
-app.get("/scores", async (req, res) => {
-    const difficulty = req.query.difficulty;
+app.get("/scores", async (request, response) => {
+    const difficulty = request.query.difficulty;
     try {
         const scores = await knexInstance("scores")
             .where("difficulty", difficulty)
@@ -62,10 +62,10 @@ app.get("/scores", async (req, res) => {
             .orderBy("moves", "asc")
             .limit(5);
 
-        res.json(scores);
+        response.json(scores);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Failed to fetch scores" });
+        response.status(500).json({ error: "Failed to fetch scores" });
     }
 });
 
