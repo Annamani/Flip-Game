@@ -1,52 +1,18 @@
-const cardDetails = [
-    {
-        id: 1,
-        name: "macao",
-        img: "https://i.postimg.cc/02BFTKKv/ara-macao-1675899.png",
-    },
-    {
-        id: 2,
-        name: "monkey",
-        img: "https://i.postimg.cc/zXc6sHHR/monkey-1675932.png",
-    },
-    {
-        id: 3,
-        name: "giraffe",
-        img: "https://i.postimg.cc/7YWdFJJ6/giraffe-1675887.png",
-    },
-    {
-        id: 4,
-        name: "tiger",
-        img: "https://i.postimg.cc/kXpz0RRS/tiger-1675933.png",
-    },
-    {
-        id: 5,
-        name: "zebra",
-        img: "https://i.postimg.cc/15j2kVV6/zebra-1675910.png",
-    },
-    {
-        id: 6,
-        name: "frog",
-        img: "https://i.postimg.cc/FsB8Mkkr/frog-1675916.png",
-    },
-    // {id: 7, name: "bird", img: "https://i.postimg.cc/xT4hwNN9/bird-1675891.png",},
-    // {id: 8, name: "elephant", img: "https://i.postimg.cc/vHNkJxxQ/elephant-1675888.png",},
-    // {id: 9, name: "crocodile",img: "https://i.postimg.cc/qM5SP660/crocodile-1675915.png"},
-    // {id: 10, name: "panther",img: "https://i.postimg.cc/hP56kQQd/panther-1675908.png"},
-    // {id: 11, name: "hippopotamus",img: "https://i.postimg.cc/dtxpbZZ3/hippopotamus-1675934.png"},
-    // {id: 12, name: "lion",img: "https://i.postimg.cc/5NRThQQN/lion-1675905.png"},
-    // {id: 13, name: "butterfly",img: "https://i.postimg.cc/Qxyw2KKh/butterfly-1675930.png"},
-];
-
+const instructions = document.querySelector(".instructions");
+const gameLevelButtons = document.querySelector(".game-level-buttons");
 const startButton = document.querySelector(".start-button");
 const resetButton = document.querySelector(".reset-button");
+const levelButton = document.querySelectorAll(".level-button");
 const moveCounters = document.querySelector(".move-counter");
 const timerElement = document.querySelector(".timer");
 const gameBoard = document.querySelector(".game-board");
+const overlay = document.getElementById("overlay-div");
+const overlayText = document.getElementById("overlay-text");
+const playAgainButton = document.getElementById("play-again-button");
 
 let cardMoveCount = 0;
 let timerInterval = null;
-let intialTime = 0;
+let initialTime = 0;
 let timeStart = false;
 const timeLimit = 300;
 let lockBoard = false;
@@ -55,31 +21,30 @@ let card1,
     card2 = null;
 let matchedPairs = 0;
 let hasStartedOnce = false;
-const totalPairs = cardDetails.length;
+let totalPairs;
+let cardDetails = [];
+let currentDifficulty = null;
+let flipDelay = 600;
 
 const startTimer = () => {
     timeStart = true;
     timerInterval = setInterval(() => {
-        intialTime++;
-        if (intialTime > timeLimit) {
-            stopTimer();
-            alert(
-                `Time's up! You completed ${matchedPairs} pairs and ${cardMoveCount} moves.`,
-            );
-            resetGame();
-        }
-        timerElement.textContent = `Time: ${intialTime} seconds`;
+        initialTime++;
+        timerElement.textContent = `Time: ${initialTime} seconds`;
     }, 1000);
 };
+
 const stopTimer = () => {
     clearInterval(timerInterval);
     timeStart = false;
 };
+
 const resetTurn = () => {
     card1 = null;
     card2 = null;
     lockBoard = false;
 };
+
 const CardFlipped = (cardElement) => {
     //check game is locked
     if (lockBoard) return;
@@ -104,18 +69,19 @@ const CardFlipped = (cardElement) => {
     lockBoard = true;
     revealCard(card1, card2);
 };
-const createCards = () => {
+
+const createCards = (cardFront, cardBack, pairOfCards) => {
+    const frontImage = cardFront[0].img;
     gameBoard.innerHTML = "";
-    const cardValues = [...cardDetails, ...cardDetails].sort(
-        () => 0.5 - Math.random(),
-    );
+    const getCards = cardBack.slice(0, pairOfCards);
+    const cardValues = [...getCards, ...getCards].sort(() => 0.5 - Math.random());
     cardValues.forEach((card) => {
         const cardElement = document.createElement("div");
         cardElement.classList.add("flip-card");
         cardElement.innerHTML = `
         <div class="flip-card-inner">
-            <div class="card-front"></div>
-            <div class="card-back" style="background-image: url(${card.img})"></div>
+            <div class="card-front" style="background-image: url(${frontImage})"></div>
+            <div class="card-back" style="background-image: url(${card.img_url})"></div>
         </div>
     `;
         cardElement.dataset.name = card.name;
@@ -124,18 +90,56 @@ const createCards = () => {
     });
 };
 
-const disableCards = (card1, card2) => {
+const disappearMatchingCards = (card1, card2) => {
+    setTimeout(() => {
+        card1.style.visibility = "hidden";
+        card2.style.visibility = "hidden";
+    }, 500);
+};
+const saveScore = async () => {
+    const playerName = prompt("Enter your name:");
+    if (!playerName) return;
+    await fetch("/scores", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            playerName,
+            difficulty: currentDifficulty,
+            moves: cardMoveCount,
+            time: initialTime,
+        }),
+    });
+};
+
+const loadScores = async () => {
+    const response = await fetch(`/scores?difficulty=${currentDifficulty}`);
+    const scores = await response.json();
+    const scoreList = document.querySelector(".score-list");
+    scoreList.innerHTML = "";
+    scores.forEach((score) => {
+        const li = document.createElement("li");
+        li.textContent = `${score.playerName} | ${score.difficulty} | ${score.moves} moves | ${score.time}s`;
+        scoreList.appendChild(li);
+    });
+};
+
+const disableCards = async (card1, card2) => {
     matchedPairs++;
     card1.classList.add("matched");
     card2.classList.add("matched");
     card1.removeEventListener("click", CardFlipped);
     card2.removeEventListener("click", CardFlipped);
     resetTurn();
+    disappearMatchingCards(card1, card2);
     if (matchedPairs === totalPairs) {
         stopTimer();
-        alert(
-            `Congratulations! You completed the game in ${cardMoveCount} moves and ${intialTime} seconds.`,
-        );
+        resetButton.disabled = true;
+        overlay.classList.add("show");
+        overlayText.textContent = `You completed the ${currentDifficulty} level game in ${cardMoveCount} moves and ${initialTime} seconds.`;
+        await saveScore();
+        await loadScores();
     }
 };
 
@@ -150,25 +154,128 @@ const revealCard = (firstCard, secondCard) => {
             secondCard.classList.remove("flipped");
             resetTurn();
         }
-    }, 1000);
+    }, flipDelay);
 };
-const startGame = () => {
+
+const loadFrontCardsFromDB = async () => {
+    const res = await fetch("/card-front");
+    return await res.json();
+};
+
+const loadBackCardsFromDB = async () => {
+    const res = await fetch("/cards");
+    return await res.json();
+};
+
+const difficultyConfig = {
+    easy: {
+        rows: 3,
+        cols: 4,
+        flipDelay: 800,
+    },
+    medium: {
+        rows: 4,
+        cols: 4,
+        flipDelay: 600,
+    },
+    hard: {
+        rows: 4,
+        cols: 6,
+        flipDelay: 350,
+    },
+};
+
+const setDifficulty = (level) => {
+    const config = difficultyConfig[level];
+    if (!config) return;
+    let rows = config.rows;
+    let cols = config.cols;
+    if (window.innerWidth < 800 && level === "hard") {
+        rows = 6;
+        cols = 4;
+    }
+    totalPairs = (rows * cols) / 2;
+    currentDifficulty = level;
+    flipDelay = config.flipDelay;
+    gameBoard.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+    gameBoard.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+};
+
+const disableButtons = () => {
+    gameLevelButtons.style.display = "none";
+};
+
+const selectLevel = () => {
+    levelButton.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const levelDifficulty = btn.dataset.difficulty;
+            setDifficulty(levelDifficulty);
+            gameLevelButtons.style.display = "none";
+            moveCounters.style.display = "block";
+            timerElement.style.display = "block";
+            resetButton.style.display = "inline-block";
+            gameBoard.style.display = "grid";
+            startGame(totalPairs);
+        });
+    });
+};
+
+const startGame = async (totalPairs) => {
+    const cardBackResult = await loadBackCardsFromDB();
+    const cardFrontResult = await loadFrontCardsFromDB();
+    //to display only few cards
+    cardDetails = cardBackResult.slice(0, totalPairs);
+    cardMoveCount = 0;
+    initialTime = 0;
+    matchedPairs = 0;
     hasStartedOnce = true;
     startButton.style.display = "none";
     resetButton.style.display = "inline-block";
     gameBoard.innerHTML = "";
     moveCounters.textContent = `Moves: ${cardMoveCount}`;
-    timerElement.textContent = `Time: ${intialTime}`;
-    createCards();
+    timerElement.textContent = `Time: ${initialTime}`;
+    createCards(cardFrontResult, cardBackResult, totalPairs);
 };
+
 const resetGame = () => {
     stopTimer();
     gameBoard.innerHTML = "";
     cardMoveCount = 0;
-    intialTime = 0;
+    initialTime = 0;
     matchedPairs = 0;
-    startGame();
+    startGame(totalPairs);
 };
-
-startButton.addEventListener("click", startGame);
+startButton.addEventListener("click", () => {
+    instructions.style.display = "none";
+    startButton.style.display = "none";
+    gameLevelButtons.style.display = "inline-block";
+    moveCounters.style.display = "none";
+    timerElement.style.display = "none";
+    resetButton.style.display = "none";
+    gameBoard.style.display = "none";
+});
+selectLevel();
+loadScores();
 resetButton.addEventListener("click", resetGame);
+playAgainButton.addEventListener("click", () => {
+    overlay.classList.remove("show");
+    moveCounters.style.display = "none";
+    timerElement.style.display = "none";
+    resetButton.style.display = "none";
+    resetButton.disabled = false;
+    gameBoard.style.display = "none";
+    gameBoard.innerHTML = "";
+    stopTimer();
+    initialTime = 0;
+    cardMoveCount = 0;
+    matchedPairs = 0;
+    moveCounters.textContent = `Moves: ${cardMoveCount}`;
+    timerElement.textContent = `Time: ${initialTime}`;
+    gameLevelButtons.style.display = "inline-block";
+});
+
+window.addEventListener("resize", () => {
+    if (currentDifficulty) {
+        setDifficulty(currentDifficulty);
+    }
+});
