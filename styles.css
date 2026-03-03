@@ -42,7 +42,7 @@ body {
     align-items: center;
     justify-content: center;
     gap: 24px;
-    margin: 16px 0;
+    margin: 16px auto;
 }
 
 .move-counter,
