@@ -74,7 +74,9 @@ const createCards = (cardFront, cardBack, pairOfCards) => {
     const frontImage = cardFront[0].img;
     gameBoard.innerHTML = "";
     const getCards = cardBack.slice(0, pairOfCards);
-    const cardValues = [...getCards, ...getCards].sort(() => 0.5 - Math.random());
+    const cardValues = [...getCards, ...getCards].sort(
+        () => 0.5 - Math.random(),
+    );
     cardValues.forEach((card) => {
         const cardElement = document.createElement("div");
         cardElement.classList.add("flip-card");
@@ -179,8 +181,8 @@ const difficultyConfig = {
         flipDelay: 600,
     },
     hard: {
-        rows: 4,
-        cols: 6,
+        rows: 5,
+        cols: 4,
         flipDelay: 350,
     },
 };
@@ -190,10 +192,6 @@ const setDifficulty = (level) => {
     if (!config) return;
     let rows = config.rows;
     let cols = config.cols;
-    if (window.innerWidth < 800 && level === "hard") {
-        rows = 6;
-        cols = 4;
-    }
     totalPairs = (rows * cols) / 2;
     currentDifficulty = level;
     flipDelay = config.flipDelay;
